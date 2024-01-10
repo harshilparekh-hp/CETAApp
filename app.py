@@ -94,7 +94,7 @@ def evaluateTriage():
     # Map the index to the actual class label
     predicted_class_label = label_encoder_target.inverse_transform([predicted_class])[0]
 
-    return render_template("index1.html", predicted_acuity = predicted_class_label)
+    return render_template("index.html", predicted_acuity = predicted_class_label)
     # return render_template("index1.html", data=predicted_class_label, data1 = predicted_class, genderVar = genderVar, 
     #                        arrivalmodeVar = arrivalmodeVar, painlevelVar = painlevelVar, symptom1 = symptom1, 
     #                        symptom2 = symptom2, temperatureVar = temperatureVar, heartrateVar = heartrateVar, 

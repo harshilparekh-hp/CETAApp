@@ -142,6 +142,43 @@
       .form-check-label-spacing {
         margin-right: 40px; /* Adjust the margin-right as needed */
       }
+      .badge-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        margin: 0;
+        /* background-color: #f5f5f5; */
+      }
+
+      .badge {
+        background-color: #d9534f; /* Bootstrap's danger color for the emergency feel, change as needed */
+        color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        /* max-width: 300px; */
+        padding: 15px;
+        text-align: center;
+      }
+
+      .badge-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .badge-content {
+        font-size: 16px;
+      }
+
+      .badge p {
+        margin: 5px 0;
+      }
+
+      #conditionalDiv{
+        display: none;
+      }
+
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -917,8 +954,6 @@
           "nasal congestion",
         ];
 
-        
-
         // Reference to the select element
         var selectElement = $(".js-example-basic-multiple");
 
@@ -989,7 +1024,7 @@
 
       <!-- Horizontal Line after the image -->
       <hr class="footer-image-line" />
-      <form action="/evaluateTriage" method="POST">
+      <form action="/evaluateTriage" method="POST" onsubmit="submitForm(event)" id="triageForm">
         <!-- Gender -->
         <div class="row">
           <div class="col-md-2"></div>
@@ -1195,9 +1230,66 @@
         </div>
 
         <hr />
-        acquity is : <b> {{ predicted_acuity }} </b>
+        <!-- acquity is : <b> {{ predicted_acuity }} </b> -->
 
-        <hr />
+        <div class="row" id="conditionalDiv">
+        {% if predicted_acuity == '1' %}
+          <div class="badge-wrap">
+            <div class="badge">
+              <div class="badge-header">Triage level is <b> {{ predicted_acuity }} - IMMEDIATE </b></div>
+              <div class="badge-content">
+                <p> Patients with life-threatening conditions requiring immediate attention.</p>
+              </div>
+            </div>
+          </div>
+        {% elif predicted_acuity == '2' %}
+          <div class="badge-wrap">
+            <div class="badge" style="color:black;background-color: yellow;">
+              <div class="badge-header">Triage level is <b> {{ predicted_acuity }} - URGENT </b></div>
+              <div class="badge-content">
+                <p>Patients with serious conditions requiring prompt attention but not immediately life-threatening</p>
+              </div>
+            </div>
+          </div>
+        {% elif predicted_acuity == '3' %}
+          <div class="badge-wrap">
+            <div class="badge" style="background-color: green;">
+              <div class="badge-header">Triage level is <b> {{ predicted_acuity }} - DELAYED </b></div>
+              <div class="badge-content">
+                <p>Patients with non-life-threatening injuries or illnesses that can wait for medical attention</p>
+              </div>
+            </div>
+          </div>
+        {% elif predicted_acuity == '4' %}
+          <div class="badge-wrap">
+            <div class="badge" style="background-color: black;">
+              <div class="badge-header">Triage level is <b> {{ predicted_acuity }} - MINOR </b></div>
+              <div class="badge-content">
+                <p>Patients with minor injuries or illnesses, necessitating minimal medical intervention</p>
+              </div>
+            </div>
+          </div>
+        {% elif predicted_acuity == '5' %}
+          <div class="badge-wrap">
+            <div class="badge" style="background-color: grey;">
+              <div class="badge-header">Triage level is <b> {{ predicted_acuity }} - EXPECTANT </b></div>
+              <div class="badge-content">
+                <p>Patients with severe, unsurvivable injuries. Resources are prioritized for those with a better chance of survival</p>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="badge-wrap">
+            <div class="badge">
+              <div class="badge-header">Triage level is </b></div>
+              <div class="badge-content">
+                Something is wrong
+              </div>
+            </div>
+          </div>
+       {% endif %}
+      </div>
+
         <!-- gender : {{ genderVar }} <br />
         arrival mode : {{ arrivalmodeVar }} <br />
         pain level : {{painlevelVar}} <br />
@@ -1219,11 +1311,21 @@
        data is : <p style="color:green;">{{ predicted_acuity }}</p>
        {% endif %}  -->
 
+      
         <script>
           $(document).ready(function () {
             $(".js-example-basic-multiple").select2();
           });
+
+          var predicted_acuity = {{ predicted_acuity }};
+
+          if ( predicted_acuity != null ) {
+            document.getElementById("conditionalDiv").style.display = "block";
+          }
+      
+
         </script>
+      
       </form>
     </div>
 
