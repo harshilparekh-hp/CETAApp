@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Canadian Emergency Triage App</title>
+    <!-- Add your custom styles if needed -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Pompiere&display=swap");
+
+      .custom-navbar {
+        background-color: white; /* Change this to your desired color */
+        color: #4aa276;
+      }
+      .select2-container--default
+        .select2-selection--multiple
+        .select2-selection__choice {
+        align-items: center;
+      }
+
+      ::placeholder {
+        font-size: 18px;
+        font-family: "Pompiere", cursive;
+      }
+
+      a {
+        color: #4aa276;
+        font-size: x-large;
+      }
+
+      label {
+        font-size: 20px;
+      }
+
+      body {
+        font-family: "Pompiere", cursive;
+        /* font-size: x-large; */
+        height: 1000px;
+      }
+
+      button {
+        font-size: xx-large;
+        color: #4aa276;
+      }
+
+      .js-example-basic-multiple {
+        width: 315px;
+        height: 20px;
+      }
+      .heading {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      /* Custom Footer */
+      .custom-footer {
+        background-color: #e0fbd6;
+        color: #000000; /* White font color */
+        text-align: center;
+        padding: 10px 0; /* Adjust padding as needed */
+        bottom: 0;
+        width: 100%;
+        height: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+
+      /* Images */
+      .footer-image {
+        position: fixed;
+        bottom: 0;
+        width: 15%; /* Adjust the size as needed */
+        z-index: 2; /* Ensure the images are above the footer */
+      }
+
+      .footer-image-left {
+        left: 0;
+        height: 150px;
+        width: 150px;
+      }
+
+      .footer-image-right {
+        right: 0;
+        height: 150px;
+        width: 150px;
+      }
+
+      .button-container {
+        justify-content: center;
+        margin-top: 20px;
+        margin-left: 0px;
+      }
+
+      .btn-lg {
+        padding: 15px 30px;
+        font-size: 2rem;
+      }
+
+      /* Center and style form */
+      .form-container {
+        margin: 0 auto;
+        width: 60%;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+        height: 1000px;
+        border-radius: 15px;
+      }
+
+      .input-image-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        height: 100px;
+      }
+
+      .footer-image-line {
+        width: 100%;
+        margin-top: 2px;
+      }
+
+      .form-control {
+        margin-bottom: 10px;
+      }
+
+      footer {
+        font-size: 20px;
+      }
+
+      .form-check-label-spacing {
+        margin-right: 40px; /* Adjust the margin-right as needed */
+      }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Your array of options
+        var optionsArray = [
+          "vomiting",
+          "hallucinations",
+          "status post fall",
+          "visual changes",
+          "calf pain",
+          "headache",
+          "ped struck",
+          "nausea",
+          "vaginal bleeding",
+          "dyspnea",
+          "chest pain",
+          "productive cough",
+          "bright red blood per rectum",
+          "fatigue",
+          "atrial fibrillation",
+          "cough",
+          "wound evaluation",
+          "sore throat",
+          "right flank pain",
+          "transfer",
+          "left shoulder pain",
+          "lower abdominal pain",
+          "abdomen pain",
+          "dental pain",
+          "neck pain",
+          "hypoglycemia",
+          "laceration",
+          "unsteady gait",
+          "weakness",
+          "dysuria",
+          "buttock pain",
+          "psych evaluation",
+          "hypertension",
+          "fever",
+          "melena",
+          "right wrist pain",
+          "dizziness",
+          "right hip fracture",
+          "left knee pain",
+          "hematemesis",
+          "leg swelling",
+          "diarrhea",
+          "right sided abdominal pain",
+          "jaundice",
+          "influenza like illness",
+          "elevated d-dimer",
+          "medical refill",
+          "gastrointestinal bleeding",
+          "left leg pain",
+          "self injury",
+          "back pain",
+          "overdose",
+          "depression",
+          "syncope",
+          "hematuria",
+          "seizure",
+          "anxiety",
+          "ethyl alcohol detox",
+          "ethyl alcohol",
+          "unable to ambulate",
+          "right rib pain",
+          "rectal pain",
+          "failure to thrive",
+          "abnormal labs",
+          "urinary retention",
+          "right eye pain",
+          "palpitations",
+          "facial swelling",
+          "asthma exacerbation",
+          "foot swelling",
+          "pedal edema",
+          "leg pain",
+          "left arm pain",
+          "rash",
+          "bilateral leg swelling",
+          "constipation",
+          "left calf pain",
+          "kidney stone",
+          "elevated troponin",
+          "non-sinus tachycardia elevation myocardial infarction",
+          "cerebrovascular accident",
+          "neutropenia",
+          "right leg swelling",
+          "wheezing",
+          "head lac",
+          "right leg pain",
+          "lower back pain",
+          "hip pain",
+          "hand pain",
+          "substance use",
+          "right ankle pain",
+          "left arm swelling",
+          "hyperglycemia",
+          "hypotension",
+          "right shoulder pain",
+          "presyncope",
+          "rib pain",
+          "abnormal ekg",
+          "subarachnoid hemorrhage",
+          "motor vehicle collision",
+          "upper back pain",
+          "left shoulder injury",
+          "subdural hematoma",
+          "epigastric pain",
+          "left upper quadrant abdomen pain",
+          "gastrointestinal bleed",
+          "tachycardia",
+          "upper abdominal pain",
+          "altered mental status",
+          "left eye swelling",
+          "foot pain",
+          "right hip pain",
+          "tremor",
+          "tremors",
+          "right arm injury",
+          "left leg swelling",
+          "decreased po intake",
+          "psychiatric hold",
+          "right upper quadrant abdominal pain",
+          "left lower quadrant abdominal pain",
+          "lethargy",
+          "abnormal ct",
+          "left sided abdominal pain",
+          "flank pain",
+          "left hip pain",
+          "facial pain",
+          "finger injury",
+          "urinary frequency",
+          "right lower back pain",
+          "sinus pain",
+          "eye pain",
+          "right foot pain",
+          "right elbow pain",
+          "shoulder pain",
+          "assault",
+          "scrotal swelling",
+          "left hand swelling",
+          "right knee swelling",
+          "right arm swelling",
+          "slurred speech",
+          "urinary tract infection",
+          "confusion",
+          "weight gain",
+          "right eye swelling",
+          "paranoid delusion",
+          "head pain",
+          "facial droop",
+          "left wrist pain",
+          "dyspnea on exertion",
+          "right weakness",
+          "foreign body",
+          "right femur fracture",
+          "vaginal pain",
+          "right thumb laceration",
+          "hypoxia",
+          "abnormal lab values",
+          "hyperkalemia",
+          "pulmonary embolism",
+          "delusions",
+          "pregnant",
+          "difficulty breathing",
+          "left flank pain",
+          "malaise",
+          "redness",
+          "left foot pain",
+          "right hand injury",
+          "abdominal distention",
+          "right arm pain",
+          "vaginal discharge",
+          "numbness",
+          "periumbilical pain",
+          "left elbow pain",
+          "knee pain",
+          "throat foreign body sensation",
+          "lightheaded",
+          "left foot numbness",
+          "right lower quadrant abdominal pain",
+          "toe pain",
+          "left upper quadrant abdominal pain",
+          "thrombocytopenia",
+          "agitation",
+          "anemia",
+          "pleuritic chest pain",
+          "right hand pain",
+          "right hand numbness",
+          "positive blood cultures",
+          "right knee pain",
+          "acute renal failure",
+          "arm laceration",
+          "hi",
+          "body aches",
+          "gastrostomy tube evaluation",
+          "pancreatitis",
+          "found down",
+          "diverticulitis",
+          "head injury",
+          "suicide attempt",
+          "scrotal pain",
+          "abscess",
+          "motorcycle accident",
+          "left knee injury",
+          "right arm numbness",
+          "dehydration",
+          "jaw pain",
+          "left leg numbness",
+          "left arm numbness",
+          "bowel obstruction",
+          "right ear pain",
+          "allergic reaction",
+          "heel pain",
+          "withdrawal",
+          "right hand laceration",
+          "alcohol withdrawal",
+          "sedative withdrawal",
+          "clotted fistula",
+          "bleeding",
+          "right facial numbness",
+          "left arm fracture",
+          "right hand swelling",
+          "right lower quadrant pain",
+          "left numbness",
+          "leg weakness",
+          "pericardial effusion",
+          "left humerus fracture",
+          "unable to urinate",
+          "leg numbness",
+          "bilateral arm numbness",
+          "ich",
+          "femur fracture",
+          "left facial droop",
+          "left foot swelling",
+          "right inguinal pain",
+          "left eye redness",
+          "coccyx pain",
+          "post operation",
+          "chills",
+          "priapism",
+          "tongue swelling",
+          "right eye redness",
+          "breast pain",
+          "arm pain",
+          "right foot swelling",
+          "facial cellulitis",
+          "arm numbness",
+          "mania",
+          "diabetic ketoacidosis",
+          "right knee injury",
+          "elevated inr",
+          "abnormal ultrasound",
+          "right finger injury",
+          "rule out pulmonary embolism",
+          "jejunostomy tube evaluation",
+          "right leg weakness",
+          "pneumonia",
+          "left inguinal pain",
+          "left leg weakness",
+          "tib fib fracture",
+          "right wrist injury",
+          "right leg redness",
+          "hives",
+          "left weakness",
+          "left knee swelling",
+          "new atrial fibrillation",
+          "detox",
+          "nausea vomiting",
+          "abnormalormal labs",
+          "ah",
+          "abnormal mri",
+          "intraparenchymal hemorrhage",
+          "bradycardia",
+          "left hand pain",
+          "right facial pain",
+          "hypokalemia",
+          "pleural effusion",
+          "aphasia",
+          "ear pain",
+          "left facial numbness",
+          "left chest pain",
+          "body pain",
+          "testicular swelling",
+          "sinus tachycardia",
+          "left rib pain",
+          "forehead laceration",
+          "myalgia",
+          "pelvic pain",
+          "wrist injury",
+          "left ear pain",
+          "chemo",
+          "edema",
+          "ankle swelling",
+          "left headache",
+          "t-spine fracture",
+          "vision changes",
+          "groin pain",
+          "right leg numbness",
+          "hip fracture",
+          "facial injury",
+          "inguinal pain",
+          "bilateral foot pain",
+          "abnormal sodium level",
+          "hemoptysis",
+          "pulseless foot",
+          "discharge",
+          "bilateral leg pain",
+          "hypothermia",
+          "facial numbness",
+          "respiratory distress",
+          "nasogastric tube evaluation",
+          "right back pain",
+          "left ankle swelling",
+          "left hip fracture",
+          "difficulty swallowing",
+          "right thigh pain",
+          "vaginal itching",
+          "left eye pain",
+          "left leg redness",
+          "left wrist injury",
+          "finger pain",
+          "vomitting",
+          "left pulseless foot",
+          "weight loss",
+          "elevated white blood cell ",
+          "finger laceration",
+          "shortness of breath",
+          "left arm weakness",
+          "psych",
+          "rabies vaccine",
+          "cellulitis",
+          "elevated blood sugar",
+          "left sided chest pain",
+          "bilateral eye swelling",
+          "swelling",
+          "vomiting abdomen pain",
+          "c-spine fracture",
+          "food bolus",
+          "smoke inhalation",
+          "vertigo",
+          "insomnia",
+          "left hand injury",
+          "right ankle injury",
+          "combative",
+          "sickle cell crisis",
+          "epistaxis",
+          "ascites",
+          "testicular pain",
+          "small bowel obstruction",
+          "right jaw pain",
+          "right leg injury",
+          "urinary incontinence",
+          "black stool",
+          "infection",
+          "fall",
+          "ventricular hypertrophy",
+          "left ankle pain",
+          "acute pelvic pain",
+          "hand numbness",
+          "right ankle swelling",
+          "right numbness",
+          "left ankle injury",
+          " deep vein thrombosis",
+          "appendicitis",
+          "hemodialysis",
+          "left side pain",
+          "neck swelling",
+          "needlestick",
+          "right shoulder injury",
+          "right upper back pain",
+          "leg laceration",
+          "left heel pain",
+          "pain",
+          "deep vein thrombosis",
+          "palpatations",
+          "hiccups",
+          "left finger pain",
+          "left back pain",
+          "right calf pain",
+          "eye redness",
+          "left hand laceration",
+          "hand swelling",
+          "lip laceration",
+          "peritonsillar abscess",
+          "burn",
+          "bilateral flank pain",
+          "abnormal ct scan",
+          "anorexia",
+          "bumps",
+          "finger swelling",
+          "neuro deficit",
+          "unresponsive",
+          "nausea diarrhea",
+          "peripherally inserted central catheter line evaluation",
+          "left neck pain",
+          "right chest pain",
+          "supraventricular tachycardia",
+          "right facial droop",
+          "lip swelling",
+          "right facial swelling",
+          "human bite",
+          "left hand numbness",
+          "ankle injury",
+          "facial fracture",
+          "post operation bleeding",
+          "right arm redness",
+          "right neck pain",
+          "coffee ground emesis",
+          "left foot injury",
+          "loss of consciousness",
+          "falls",
+          "gum bleeding",
+          "mouth pain",
+          "right eye evaluation",
+          "left testicular pain",
+          "mild cognitive impairment",
+          "needs endoscopic retrograde cholangiopancreatography",
+          "leg injury",
+          "left leg injury",
+          "clogged foley",
+          "right testicular pain",
+          "left facial pain",
+          "left wrist laceration",
+          "angioedema",
+          "bilateral arm pain",
+          "right finger pain",
+          "mandibular fracture",
+          "c2 fracture",
+          "ataxia",
+          "right foot injury",
+          "implantable cardioverter defibrillator evaluation",
+          "chest pains",
+          "leg redness",
+          "lower extremity swelling",
+          "sepsis",
+          "opioid withdrawal",
+          "pelvic fracture",
+          "suprapubic pain",
+          "right sided chest pain",
+          "suture removal",
+          "pneumothorax",
+          "left breast pain",
+          "left facial swelling",
+          "rectal bleeding",
+          "hyponatremia",
+          "lower extremity pain",
+          "left thumb laceration",
+          "itching",
+          "foot laceration",
+          "foley insertion",
+          "nose pain",
+          "thumb injury",
+          "congestion",
+          "psychosis",
+          "bicycle accident",
+          "hernia",
+          "red cell indices",
+          "word finding difficulty",
+          "head strike",
+          "hepatic encephalopathy",
+          "left thumb pain",
+          "abdominal aortic aneurysm",
+          "abdomen  pain",
+          "wrist pain",
+          "ankle pain",
+          "self injury ",
+          "bilateral knee pain",
+          "rule out urinary tract infection",
+          "ventricular tachycardia",
+          "eye swelling",
+          "fevers",
+          "rib fracture",
+          "difficulty ambulating",
+          "urinary urgency",
+          "cat bite",
+          "throat tightness",
+          "left finger injury",
+          "stab wound",
+          "abdominal pain",
+          "left arm injury",
+          "tachypnea",
+          "dizzy",
+          "irregular heart rate",
+          "hand laceration",
+          "substance abuse",
+          "facial trauma",
+          "left shoulder dislocation",
+          "neuro evaluation",
+          "tracheostomy evaluation",
+          "self inflicted injury",
+          "rule out deep vein thrombosis",
+          "ethyl alcohol withdrawal",
+          "left lower extremity pain",
+          "left eye injury",
+          "diplopia",
+          "status post hypotension",
+          "left thumb injury",
+          "fecal incontinence",
+          "right hand redness",
+          "left femur fracture",
+          "right hip injury",
+          "bodyaches",
+          "insect bite",
+          "multiple sclerosis changes",
+          "gyn evaluation",
+          "chest heaviness",
+          "right arm laceration",
+          "arm swelling",
+          "blurred vision",
+          "medication error",
+          "right breast pain",
+          "urosepsis",
+          "myalgias",
+          "transient ischemic attack",
+          "left buttock pain",
+          "facial laceration",
+          "exposure",
+          "hypotensive",
+          "hand injury",
+          "abnormal echo",
+          "left arm redness",
+          "not feeling well",
+          "left jaw pain",
+          "upper respiratory infection",
+          "left ankle fracture",
+          "penile pain",
+          "bilateral leg weakness",
+          "resolved",
+          "vaginal bleed",
+          "right leg cellulitis",
+          "left eye evaluation",
+          "right finger laceration",
+          "right arm weakness",
+          "skin erythema",
+          "genitourinary pain",
+          "cholecystitis",
+          "medical clearance",
+          "orbital fracture",
+          "left foot redness",
+          "right thumb injury",
+          "nasal congestion",
+          "left toe pain",
+          "chest tightness",
+          "dog bite",
+          "fever ",
+          "nasal injury",
+          "left leg cellulitis",
+          "genitourinary evaluation",
+          "right toe pain",
+          "elbow pain",
+          "fever cough",
+          "multiple complaints",
+          "lab request",
+          "code cord",
+          "left sided weakness",
+          "left elbow fracture",
+          "eye evaluation",
+          "abnormal xray",
+          "lab draw",
+          "drain evaluation",
+          "gunshot wound",
+          "near syncope",
+          "right headache",
+          "gen weakness",
+          "left hip injury",
+          "vomiting blood",
+          "percutaneous transluminal angioplasty",
+          "confused",
+          "right foot redness",
+          "altered multiple sclerosis",
+          "knee injury",
+          "foot injury",
+          "foreign body throat",
+          "agitated",
+          "right ankle fracture",
+          "toe injury",
+          "left leg laceration",
+          "gastroparesis",
+          "vomiting ",
+          "left leg deep vein thrombosis",
+          "alt multiple sclerosis",
+          "dysphagia",
+          "left upper back pain",
+          "tick bite",
+          "passed out",
+          "abdomen cramping",
+          "for admission",
+          "foley evaluation",
+          "rule out stroke",
+          "right foot ulcer",
+          "right heel pain",
+          "status post motor vehicle collision",
+          "left arm tingling",
+          "right thumb pain",
+          "bizarre behavior",
+          "prescription refill",
+          "right foot numbness",
+          "intracranial mass",
+          "diahrrea",
+          "polyuria",
+          "bilateral ear pain",
+          "oliguria",
+          "incontinence",
+          "l-spine fracture",
+          "left finger swelling",
+          "right leg deep vein thrombosis",
+          "ecchymosis",
+          "joint pain",
+          "back pain ",
+          "throat pain",
+          "chest discomfort",
+          "left thigh pain",
+          "weak",
+          "hearing voices",
+          "head bleed",
+          "status post head injury",
+          "right shoulder dislocation",
+          "arm weakness",
+          "rule out ectopic",
+          "ekg changes",
+          "staples removal",
+          "lower extremity weakness",
+          "nephrostomy tube evaluation",
+          "evaluation",
+          "right abdomen pain",
+          "left groin pain",
+          "chemical exposure",
+          "heart racing",
+          "right lower extremity pain",
+          "gallstones",
+          "bilateral lower back pain",
+          "left foot ulcer",
+          "shortness of breath chest pain",
+          "bite",
+          "influenza",
+          "right arm cellulitis",
+          "toothache",
+          "rapid atrial fibrillation",
+          "head pressure",
+          "feels unwell",
+          "left abdomen pain",
+          "right leg laceration",
+          "change in mental status",
+          "right elbow fracture",
+          "unwitnessed fall",
+          "fistula evaluation",
+          "right arm fracture",
+          "psychiatric evaluation",
+          "left hand weakness",
+          "bilateral leg numbness",
+          "lethargic",
+          "high blood pressure",
+          "multiple sclerosis flare",
+          "chin laceration",
+          "ingestion",
+          "status post unresponsive",
+          "nausea vomiting diarrhea",
+          "foot infection",
+          "requesting detox",
+          "right upper quadrant pain",
+          "head laceration",
+          "blurry vision",
+          "anxious",
+          "right sided abdomen pain",
+          "intoxicated",
+          "left lower back pain",
+          "left arm laceration",
+          "right sided weakness",
+          "dyspnea ",
+          "bilateral lower extremity edema",
+          "congestive heart failure",
+          "chest pain ",
+          "chest pressure",
+          "rule out cerebrovascular accident",
+          "self injury hi",
+          "bike accident",
+          "c1 fracture",
+          "right groin pain",
+          "chest congestion",
+          "rule out transient ischemic attack",
+          "foreign body in throat",
+          "lumps",
+          "thumb laceration",
+          "bleeding fistula",
+          "midline evaluation",
+          "bilateral eye pain",
+          "multiple c o",
+          "skin evaluation",
+          "panic attack",
+          "bilateral shoulder pain",
+          "for evaluation",
+          "chin lac",
+          "renal failure",
+          "bilateral hand pain",
+          "pre-syncope",
+          "left finger laceration",
+          "lower extremity edema",
+          "abdomen cramps",
+          "medical reaction",
+          "migraine",
+          "depressed",
+          "fever chills",
+          "lip lac",
+          "facial lac",
+          "feeling unwell",
+          "abdomen pain ",
+          "multiple falls",
+          "status post assault",
+          "labor",
+          "double vision",
+          "bilateral hand numbness",
+          "port evaluation",
+          "generalized weakness",
+          "pain control",
+          "blood in stool",
+          "asthma",
+          "mental status changes",
+          "change in multiple sclerosis",
+          "right eye injury",
+          "right side pain",
+          "vomiting diarrhea",
+          "cough shortness of breath",
+          "visual disturbance",
+          " seizure",
+          "cough fever",
+          "unable to void",
+          "abdomen distention",
+          "status post motor vehicle accident",
+          "post operation pain",
+        ];
+
+        // Reference to the select element
+        var selectElement = $(".js-example-basic-multiple");
+
+        // Populate options
+        $.each(optionsArray, function (index, value) {
+          var option = new Option(value, value);
+          selectElement.append(option);
+        });
+
+        // Initialize Select2
+        selectElement.select2();
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar custom-navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#myNavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a
+            class="navbar-brand"
+            style="font-size: x-large; font-weight: bolder"
+            href="#"
+            >CETA</a
+          >
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#">App</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div class="container mx-auto mt-3">
+      <h2 class="heading">Welcome to the Canadian Emergency Triage App</h2>
+      <!-- Add content for the home page as needed -->
+    </div>
+
+    <!-- App Page -->
+    <div class="container mt-3">
+      <form action="/evaluateTriage" method="POST"></form>
+    </div>
+    <hr />
+
+    <div class="form-container">
+      <img src="{{ url_for('static', filename='images/Picture1.png') }}" alt="Input Image" class="input-image-center" />
+
+      <!-- Horizontal Line after the image -->
+      <hr class="footer-image-line" />
+      <form action="/evaluateTriage" method="POST">
+        <!-- Gender -->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label>Gender</label>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="male"
+                value="m"
+              />
+              <label
+                class="form-check-label form-check-label-spacing"
+                for="male"
+                >Male</label
+              >
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="female"
+                value="f"
+              />
+              <label
+                class="form-check-label form-check-label-spacing"
+                for="female"
+                >Female</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrival Mode Row -->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="arrivalMode">Arrival Mode</label>
+          </div>
+          <div class="col-md-4">
+            <select class="form-control" id="arrivalMode" name="arrivalMode">
+              <option value="walk in">Walk-in</option>
+              <option value="ambulance">Ambulance</option>
+              <option value="other">Other</option>
+              <option value="unknown">Unknown</option>
+              <option value="helicopter">Helicopter</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="temperature">Temperature</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              name="temperature"
+              id="temperature"
+              placeholder="Enter temperature"
+            />
+          </div>
+        </div>
+
+        <!-- Heart rate-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="Heartrate">Heart rate</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="heartrate"
+              name="heartrate"
+              placeholder="Enter Heart rate"
+            />
+          </div>
+        </div>
+
+        <!-- Resperate -->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="Resperate">Resperate</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              id="resperate"
+              name="resperate"
+              placeholder="Enter Resperate"
+            />
+          </div>
+        </div>
+
+        <!-- O2 Saturation-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="o2saturation">Oxygen Saturation</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              name="o2saturation"
+              id="o2saturation"
+              placeholder="Enter Oxygen Saturation"
+            />
+          </div>
+        </div>
+
+        <!-- Systolic BP-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="sbp">Systolic Blood Pressure</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              name="sbp"
+              id="sbp"
+              placeholder="Enter Systolic Blood Pressure"
+            />
+          </div>
+        </div>
+
+        <!-- Diastolic BP-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="dbp">Diastolic Blood Pressure</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              name="dbp"
+              id="dbp"
+              placeholder="Enter Diastolic Blood Pressure"
+            />
+          </div>
+        </div>
+
+        <!-- Pain Level-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="pain">Pain Level</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              name="pain"
+              id="pain"
+              placeholder="Enter Pain Level Between 0 and 10"
+            />
+          </div>
+        </div>
+
+        <!-- Chief Complaint-->
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4">
+            <label for="pain">Symptoms</label>
+          </div>
+          <div class="col-md-4">
+            <select
+              class="js-example-basic-multiple"
+              multiple="multiple"
+              data-placeholder="  Enter Sympotms"
+              name="symptoms"
+            >
+              <option value=""></option>
+
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row button-container">
+            <div class="col-md-6"></div>
+            <div class="col-md-5">
+              <button type="submit" class="btn btn-lg">Evaluate Triage</button>
+              <button type="reset" class="btn btn-secondary btn-lg">
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+        acquity is : <b> {{ predicted_acuity }} </b>
+
+        <hr />
+        <!-- gender : {{ genderVar }} <br />
+        arrival mode : {{ arrivalmodeVar }} <br />
+        pain level : {{painlevelVar}} <br />
+        symptom1 : {{symptom1}} <br />
+        symptom2 : {{symptom2}} <br />
+        temperatureVar : {{temperatureVar}} <br />
+        heartrateVar = {{heartrateVar}}  <br />
+        resperateVar = {{resperateVar}} <br />
+        o2saturationVar = {{o2saturationVar}} <br />
+        sbpVar = {{sbpVar}} <br />
+        dbpVar = {{dbpVar}} <br />
+        reshape_numerical_features = {{ reshape_numerical_features }} <br />
+        scaled_numerical_features = {{ scaled_numerical_features }} <br /> -->
+
+
+      <!-- {%if predicted_acuity == '1'%}
+
+      data is : <p style="color: red;">{{ predicted_acuity }}</p>
+       {%else%}
+       data is : <p style="color:green;">{{ predicted_acuity }}</p>
+       {% endif %}  -->
+
+        <script>
+          $(document).ready(function () {
+            $(".js-example-basic-multiple").select2();
+          });
+        </script>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+      <div class="container">
+        <p>Developed by the students of UofW.</p>
+      </div>
+    </footer>
+
+    <img
+      src="{{ url_for('static', filename='images/footer1.png') }}"
+      alt="Left Image"
+      class="footer-image footer-image-left"
+    />
+    <img
+      src="{{ url_for('static', filename='images/footer2.png') }}"
+      alt="Right Image"
+      class="footer-image footer-image-right"
+    />
+  </body>
+</html>
